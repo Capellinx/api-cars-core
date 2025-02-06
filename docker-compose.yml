@@ -13,16 +13,22 @@ services:
       - api_network
     depends_on:
       - mongo
-    command: ["sh", "-c", "npx prisma generate dev && npx nodemon --exec 'npm run start'"]
-
+    command:
+      [
+        "sh",
+        "-c",
+        "npx prisma generate dev && npx nodemon --exec 'npm run start'",
+      ]
 
   mongo:
     image: mongo
     container_name: mongo-db
     volumes:
-      - ./data/db:/data/db
+      - db-data:/var/lib/mysql
     ports:
       - "27017:27017"
 
 networks:
   api_network: {}
+volumes:
+  db-data: {}
