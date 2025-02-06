@@ -1,8 +1,10 @@
 import { prisma } from "../prisma/prisma";
 import { app } from "./app";
 import { env } from "./env";
-   class Server {
-   constructor(){}
+class Server {
+   constructor(){
+      this.startServer();
+   }
 
    private async startDatabase(){
       try {
@@ -24,4 +26,4 @@ import { env } from "./env";
    }
 }
 
-new Server().startServer();
+new Server()
