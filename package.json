@@ -20,7 +20,8 @@
     "express-async-errors": "^3.1.1",
     "prisma": "^6.3.1",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
