@@ -2,9 +2,17 @@
 export interface CarsService {
    findAll(props: CarsService.InputAllCars): Promise<CarsService.OutputAllCars>;
    auth(props: CarsService.InputAuth): Promise<CarsService.OutputAuth>;
+   create(props: CarsService.InputCreateCar): Promise<CarsService.OutputCreateCar>
 }
 
 export namespace CarsService {
+   export interface InputCreateCar {
+      name: string,
+      brand: string,
+      yearFabrication: number,
+      price: number
+      accessToken: string
+   }
    export interface InputAllCars {
       page: number,
       pageSize: number,
@@ -15,6 +23,10 @@ export namespace CarsService {
    export interface InputAuth {
       login: string,
       password: string
+   }
+
+   export interface OutputCreateCar {
+      id: string
    }
 
    export interface OutputAuth {
