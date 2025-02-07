@@ -20,7 +20,6 @@ carsRouter.post(
 
 carsRouter.get(
    "/api/car",
-   DtoRequestValidationMiddleware.execute({ query: listCarsSchema }),
    async (request: Request, response: Response) => {
       await listCarsController.handle(request, response)
       return
