@@ -7,11 +7,9 @@ export class AuthenticateUserUseCase {
    ) { }
 
    async execute({ login, password }: { login: string, password: string }) {
-      if (!login || !password) throw new BadRequestError('Login and password are required')
-
       const authUser = await this.carsServiCarsService.auth({ login, password })
 
-      if (!authUser) throw new UnauthorizedError('Invalid credentials')
+      if (!authUser) throw new UnauthorizedError('Invalid credentials') 
 
          
       return {
