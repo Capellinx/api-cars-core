@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ListCarsUseCase } from "./list-cars";
+import { ListCarsUseCase } from "./list-cars-use-case";
 
 export class ListCarsController {
    constructor(
