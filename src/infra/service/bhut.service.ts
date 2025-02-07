@@ -34,8 +34,32 @@ export class BhutService implements CarsService {
          })
 
          return {
-           paginacao: data.paginacao,
-           items: data.itens
+            paginacao: data.paginacao,
+            items: data.itens
+         }
+      } catch (error) {
+         throw error
+      }
+   }
+
+   async create(props: CarsService.InputCreateCar): Promise<CarsService.OutputCreateCar> {
+      try {
+         const { data } = await API.post("/carro",
+            {
+               nome: props.name,
+               marca: props.brand,
+               anoFabricacao: props.yearFabrication,
+               preco: props.price,
+            },
+            {
+               headers: {
+                  Authorization: `Bearer ${props.accessToken}`,
+               },
+            }
+         );
+
+         return {
+            id: data.id
          }
       } catch (error) {
          throw error
