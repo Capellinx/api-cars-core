@@ -1,5 +1,5 @@
 import { BhutService } from "../../infra/service/bhut.service";
-import { AuthenticateUserUseCase } from "../authenticate-user/authenticate-user";
+import { AuthenticateUserUseCase } from "../authenticate-user/authenticate-user-use-case";
 import { ListCarsUseCase } from "./list-cars-use-case";
 import { ListCarsController } from "./list-cars.controller";
 
