@@ -4,8 +4,19 @@ import { DtoRequestValidationMiddleware } from "../middlewares/data-transfer-obj
 import { listCarsSchema } from "../use-cases/list-cars/list-cars-dto";
 import { createCarController } from "../use-cases/create-car";
 import { createCarSchema } from "../use-cases/create-car/create-car-dto";
+import { authenticateUserSchema } from "../use-cases/authenticate-user/authenticate-user-dto";
+import { authenticateUserController } from "../use-cases/authenticate-user";
 
 export const carsRouter = Router()
+
+carsRouter.post(
+   "/api/token",
+   DtoRequestValidationMiddleware.execute({ body: authenticateUserSchema }),
+   async (request: Request, response: Response) => {
+      await authenticateUserController.handle(request, response)
+      return
+   }
+)
 
 carsRouter.get(
    "/api/car",
