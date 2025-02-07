@@ -6,3 +6,10 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+model TrackLogs {
+  id             String   @id @default(uuid()) @map("_id") @db.ObjectId
+  carId          String   @map("car_id")
+  dateCreated    DateTime @map("date_created")
+  dateProcessed  DateTime @map("date_processed")
+  webhookStatus  String?  @map("webhook_status")
+}
