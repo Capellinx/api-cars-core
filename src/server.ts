@@ -1,6 +1,6 @@
 import { prisma } from "../prisma/prisma";
 import { app } from "./app";
-import { env } from "./env";
+import { env } from "./config/env";
 class Server {
    constructor(){
       this.startServer();
