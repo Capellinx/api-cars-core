@@ -1,7 +1,7 @@
 import { env } from "../../config/env";
 import { Car } from "../../domain/entities/cars";
 import { CarsService } from "../../domain/service/cars.service";
-import { AuthenticateUserUseCase } from "../authenticate-user/authenticate-user";
+import { AuthenticateUserUseCase } from "../authenticate-user/authenticate-user-use-case";
 import { CreateCarDTO } from "./create-car-dto";
 
 export class CreateCarUseCase {
@@ -23,7 +23,7 @@ export class CreateCarUseCase {
          preco: price,
       })
 
-      const { id: carId } = await this.carsService.create({
+      const { id: car_id } = await this.carsService.create({
          name: newCar.nome,
          brand: newCar.marca,
          yearFabrication: newCar.anoFabricacao,
@@ -32,7 +32,7 @@ export class CreateCarUseCase {
       })
 
       return {
-         carId
+         car_id
       };
    }
 

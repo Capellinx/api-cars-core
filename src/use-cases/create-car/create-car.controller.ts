@@ -10,13 +10,13 @@ export class CreateCarController {
    async handle(request: Request, response: Response): Promise<Response> {
       const { name, brand, yearFabrication, price } = request.body;
 
-      const { carId } = await this.createCarUseCase.execute({
+      const { car_id } = await this.createCarUseCase.execute({
          name,
          brand,
          yearFabrication,
          price
       })
 
-      return response.status(201).json({ carId })
+      return response.status(201).json({ car_id })
    }
 }
