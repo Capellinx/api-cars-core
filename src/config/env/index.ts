@@ -5,6 +5,7 @@ const envSchema = z.object({
    PORT: z.coerce.number().default(3000).describe("Server port"),
    USERNAME: z.string().describe("Service username"),
    PASSWORD: z.string().describe("Service password"),
+   BASE_URL: z.string().describe("Base URL service to consume"),
 })
 
 const _env = envSchema.safeParse(process.env)
