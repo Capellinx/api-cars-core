@@ -1,15 +1,15 @@
-import { CarsRepository } from "../../domain/repositories/cars.repository";
+import { CarsService } from "../../domain/service/cars.service";
 import { BadRequestError, UnauthorizedError } from "../../utils/errors";
 
 export class AuthenticateUserUseCase {
    constructor(
-      private carsRepository: CarsRepository
+      private carsServiCarsService: CarsService
    ) { }
 
    async execute({ login, password }: { login: string, password: string }) {
       if (!login || !password) throw new BadRequestError('Login and password are required')
 
-      const authUser = await this.carsRepository.auth({ login, password })
+      const authUser = await this.carsServiCarsService.auth({ login, password })
 
       if (!authUser) throw new UnauthorizedError('Invalid credentials')
 
