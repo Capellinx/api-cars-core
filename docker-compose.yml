@@ -11,8 +11,10 @@ services:
       - /app/node_modules
     networks:
       - api_network
+      - rabbitmq_nodejs
     depends_on:
       - mongo
+      - rabbitmq
     command:
       [
         "sh",
@@ -27,21 +29,29 @@ services:
       - db-data:/var/lib/mysql
     ports:
       - "27017:27017"
+    networks:
+      - api_network
 
   rabbitmq:
-    image: rabbitmq:3.8-management-alpine
-    container_name: "rabbitmq"
+    image: "rabbitmq:3.8-management-alpine"
+    container_name: nodejs-rabbitmq-rabbitmq
+    hostname: rabbitmq
     ports:
-      - 5673:5672
-      - 15673:15672
+      - "15672:15672"
+      - "5672:5672"
     volumes:
-      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
-      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+      - "rabbitmq-data:/var/lib/rabbitmq"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
     networks:
       - rabbitmq_nodejs
 
 networks:
+  rabbitmq_nodejs:
+    driver: bridge
   api_network: {}
-  rabbitmq_nodejs: {}
+
 volumes:
   db-data: {}
+  rabbitmq-data: {}
