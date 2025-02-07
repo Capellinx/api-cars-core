@@ -2,7 +2,7 @@ import { randomUUID as uuid } from 'crypto'
 import { BadRequestError } from '../../utils/errors'
 
 interface ICarsProps {
-   id: string
+   id?: string
    nome: string
    marca: string
    preco: number
@@ -10,7 +10,7 @@ interface ICarsProps {
 }
 
 
-class Cars {
+class Car {
    private _id: string
    private _nome: string
    private _marca: string
@@ -29,7 +29,7 @@ class Cars {
    }
 
    public static create(props?: Partial<ICarsProps>) {
-      return new Cars({
+      return new Car({
          id: props?.id ?? uuid(),
          nome: props?.nome ?? 'Novo Carro',
          marca: props?.marca ?? 'Genérica',
@@ -73,4 +73,4 @@ class Cars {
    }
 }
 
-export { Cars }
+export { Car }
