@@ -6,7 +6,7 @@ export class BhutService implements CarsService {
       try {
          const { data } = await API.post("/autenticacao/token", {
             login,
-            password
+            senha: password
          })
 
          return {
@@ -22,22 +22,20 @@ export class BhutService implements CarsService {
 
    async findAll({ page, pageSize, active, accessToken }: CarsService.InputAllCars): Promise<CarsService.OutputAllCars> {
       try {
-         const { data } = await API.post("/carro", {
+         const { data } = await API.get("/carro", {
             params: {
-               page,
-               pageSize,
-               active
+               pagina: page,
+               tamanhoPagina: pageSize,
+               ativo: active
             },
-            Headers: {
+            headers: {
                Authorization: `Bearer ${accessToken}`
             }
          })
 
-
-
          return {
            paginacao: data.paginacao,
-           items: data.items,
+           items: data.itens
          }
       } catch (error) {
          throw error
