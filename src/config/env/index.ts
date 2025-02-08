@@ -9,7 +9,7 @@ const envSchema = z.object({
    USERNAME: z.string().describe("Service username"),
    PASSWORD: z.string().describe("Service password"),
    BASE_URL: z.string().describe("Base URL service to consume"),
-   AMQP_URL: z.string().describe("AMQP URL"),
+   RABBITMQ_URL: z.string().describe("AMQP URL"),
 })
 
 const _env = envSchema.safeParse(process.env)
