@@ -1,13 +1,16 @@
 import { env } from "../../config/env";
 import { Car } from "../../domain/entities/cars";
 import { CarsService } from "../../domain/service/cars.service";
+import { MessagingService } from "../../domain/service/messaging.service";
 import { AuthenticateUserUseCase } from "../authenticate-user/authenticate-user-use-case";
+import { PublishCreateInformationUseCase } from "../publish-create-inforamtion/publish-create-information-use-case";
 import { CreateCarDTO } from "./create-car-dto";
 
 export class CreateCarUseCase {
    constructor(
       private carsService: CarsService,
-      private authenticateUseCase: AuthenticateUserUseCase
+      private authenticateUseCase: AuthenticateUserUseCase,
+      private publishCreateInformationUseCase: PublishCreateInformationUseCase
    ) { }
 
    async execute({ name, brand, yearFabrication, price }: CreateCarDTO) {
@@ -30,6 +33,8 @@ export class CreateCarUseCase {
          price: newCar.preco,
          accessToken
       })
+
+      await this.publishCreateInformationUseCase.execute({ car_id })
 
       return {
          car_id
