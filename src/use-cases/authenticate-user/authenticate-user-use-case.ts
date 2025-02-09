@@ -1,4 +1,4 @@
-import { CarsService } from "../../domain/service/cars.service";
+import { CarsService } from "../../infra/service/cars.service";
 import { BadRequestError, UnauthorizedError } from "../../utils/errors";
 
 export class AuthenticateUserUseCase {

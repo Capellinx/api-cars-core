@@ -1,4 +1,4 @@
-import { MessagingService } from "../../domain/service/messaging.service";
+import { MessagingService } from "../../infra/service/messaging.service";
 
 export class PublishCreateInformationUseCase {
    constructor(

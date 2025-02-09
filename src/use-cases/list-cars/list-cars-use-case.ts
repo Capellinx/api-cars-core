@@ -1,5 +1,5 @@
 import { env } from "../../config/env";
-import { CarsService } from "../../domain/service/cars.service";
+import { CarsService } from "../../infra/service/cars.service";
 import { BadRequestError } from "../../utils/errors";
 import { AuthenticateUserUseCase } from "../authenticate-user/authenticate-user-use-case";
 import { ListCarsDTO } from "./list-cars-dto";
