@@ -6,6 +6,7 @@ import { createCarController } from "../use-cases/create-car";
 import { createCarSchema } from "../use-cases/create-car/create-car-dto";
 import { authenticateUserSchema } from "../use-cases/authenticate-user/authenticate-user-dto";
 import { authenticateUserController } from "../use-cases/authenticate-user";
+import { listLogsController } from "../use-cases/list-logs";
 
 export const carsRouter = Router()
 
@@ -31,6 +32,14 @@ carsRouter.post(
    DtoRequestValidationMiddleware.execute({ body: createCarSchema }),
    async (request: Request, response: Response) => {
       await createCarController.handle(request, response)
+      return
+   }
+)
+
+carsRouter.get(
+   "/api/log",
+   async (request: Request, response: Response) => {
+      await listLogsController.handle(request, response)
       return
    }
 )
