@@ -21,5 +21,5 @@ export const swaggerOptions = {
          },
       },
    },
-   apis: ['./src/routes/docs/*.ts'],
+   apis: ['./src/docs/*.ts'],
 };
