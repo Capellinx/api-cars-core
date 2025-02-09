@@ -1,85 +1,11 @@
 import { Request, Response, Router } from "express";
 import { carsRouter } from "../routes/cars";
-import { authenticateUserController } from "../use-cases/authenticate-user";
 import { DtoRequestValidationMiddleware } from "../middlewares/data-transfer-object-validation.middleware";
-import { authenticateUserSchema } from "../use-cases/authenticate-user/authenticate-user-dto";
 import { createCarSchema } from "../use-cases/create-car/create-car-dto";
 import { createCarController } from "../use-cases/create-car";
 import { listCarsController } from "../use-cases/list-cars";
+import { listLogsController } from "../use-cases/list-logs";
 
-/**
- * @swagger
- * tags:
- *   name: Cars
- *   description: Endpoints relacionados a carros
- */
-
-/**
- * @swagger
- * /api/token:
- *   post:
- *     summary: Autentica um usuário e retorna um token de acesso
- *     description: Esse endpoint permite autenticar um usuário utilizando o login e senha, retornando um token de acesso (JWT) e outros detalhes.
- *     tags: [Cars]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               login:
- *                 type: string
- *                 example: "usuario@example.com"
- *               password:
- *                 type: string
- *                 example: "senhaSecreta123"
- *     responses:
- *       200:
- *         description: Token de acesso gerado com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 accessToken:
- *                   type: string
- *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5MTA1MDgsInBheWxvYWQiOnsiaWQiOiJjM2EyZWY1Mi00OTcxLTRkM2UtODI4OC0wOTgwNDNjMWQ1MGIiLCJsb2dpbiI6Imx1Y2FzLmNhcGVsbGEiLCJuYW1lIjoiTHVjYXMgQ2FwZWxsYSIsImdyb3VwSWQiOiI5OTFhOTExNC01ZmE4LTRiNjItOTBiZi05Yjk4NjI1MzljNGIiLCJncm91cE5hbWUiOiJVc3XDoXJpbyJ9"
- *                 refreshToken:
- *                   type: string
- *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3Mzg5MzkzMDgsInBheWxvYWQiOnsiaWQiOiJjM2EyZWY1Mi00OTcxLTRkM2UtODI4OC0wOTgwNDNjMWQ1MGIiLCJsb2dpbiI6Imx1Y2FzLmNhcGVsbGEiLCJuYW1lIjoiTHVjYXMgQ2FwZWxsYSIsImdyb3VwSWQiOiI5OTFhOTExNC01ZmE4LTRiNjItOTBiZi05Yjk4NjI1MzljNGIiLCJncm91cE5hbWUiOiJVc3XDoXJpbyJ9"
- *                 tokenType:
- *                   type: string
- *                   example: "Bearer"
- *                 expiresIn:
- *                   type: integer
- *                   example: 14400
- *       400:
- *         description: Dados de login ou senha inválidos
- *       500:
- *         description: Erro interno do servidor
- *     x-codeSamples:
- *       - lang: "JavaScript"
- *         source: |
- *           fetch('/api/token', {
- *             method: 'POST',
- *             headers: {
- *               'Content-Type': 'application/json',
- *             },
- *             body: JSON.stringify({ login: 'usuario@example.com', password: 'senhaSecreta123' })
- *           })
- *           .then(response => response.json())
- *           .then(data => console.log(data))
- *           .catch(error => console.error('Error:', error));
- */
-carsRouter.post(
-   "/api/token",
-   DtoRequestValidationMiddleware.execute({ body: authenticateUserSchema }),
-   async (request: Request, response: Response) => {
-      await authenticateUserController.handle(request, response)
-      return
-   }
-)
 
 /**
  * @swagger
@@ -220,6 +146,62 @@ carsRouter.get(
    "/api/car",
    async (request: Request, response: Response) => {
       await listCarsController.handle(request, response);
+      return;
+   }
+);
+
+/**
+ * @swagger
+ * /api/log:
+ *   get:
+ *     summary: Retrieves a list of car logs
+ *     description: Fetches a list of car logs with details such as car_id, created_at, and process_at.
+ *     tags: 
+ *       - Cars
+ *     responses:
+ *       200:
+ *         description: A list of car logs
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: The unique identifier for the log
+ *                   car_id:
+ *                     type: string
+ *                     description: The unique identifier for the car
+ *                   created_at:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The timestamp when the log was created
+ *                   process_at:
+ *                     type: string
+ *                     format: date-time
+ *                     description: The timestamp when the log was processed
+ *             example:
+ *               - id: "67a90958701c9aba52f1f07a"
+ *                 car_id: "34557f75-9dd2-424b-9e0d-23f1e6252cb8"
+ *                 created_at: "2025-02-09T20:00:20.776Z"
+ *                 process_at: "2025-02-09T20:00:24.757Z"
+ *               - id: "67a90958701c9aba52f1f07c"
+ *                 car_id: "cbe20a5d-8003-4e3a-b2ca-78f928d8f322"
+ *                 created_at: "2025-02-09T20:00:21.458Z"
+ *                 process_at: "2025-02-09T20:00:24.761Z"
+ *               - id: "67a90958701c9aba52f1f07e"
+ *                 car_id: "ad977096-afda-4027-a92e-f22ea137774e"
+ *                 created_at: "2025-02-09T20:00:22.072Z"
+ *                 process_at: "2025-02-09T20:00:24.762Z"
+ *       500:
+ *         description: Internal server error
+ */
+carsRouter.get(
+   "/api/log",
+   async (request: Request, response: Response) => {
+      await listLogsController.handle(request, response);
       return;
    }
 );
