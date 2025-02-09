@@ -1,9 +1,13 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Document } from "mongoose";
 import { CarsRepository } from "../../domain/repositories/cars.repository";
-import { date, z } from "zod";
-import { historyLogSchema } from "../../use-cases/weebhook-notify/webhook-notify-dto";
 
-const schema = new Schema<z.infer<typeof historyLogSchema>>({
+interface HistoryLog extends Document {
+   car_id: string;
+   created_at: Date;
+   process_at: Date;
+}
+
+const createSchema = new Schema<HistoryLog>({
    car_id: String,
    created_at: {
       type: Date,
@@ -11,23 +15,31 @@ const schema = new Schema<z.infer<typeof historyLogSchema>>({
    process_at: {
       type: Date,
    }
-})
+});
+
+const HistoryLogModel = model<HistoryLog>('HistoryLog', createSchema, 'history_logs');
 
 export class MongooseRepository implements CarsRepository {
    constructor() { }
 
-   async createLog({car_id, created_at, process_at}: CarsRepository.Input): Promise<void> {
-      const HistoryLog = model('HistoryLog', schema, 'history_logs')
-
-      const newHistoryLog = new HistoryLog({ 
+   async createLog({ car_id, created_at, process_at }: CarsRepository.Input): Promise<void> {
+      const newHistoryLog = new HistoryLogModel({
          car_id,
          created_at,
          process_at
-       });
+      });
 
-      await newHistoryLog.save()
-
-      return
+      await newHistoryLog.save();
    }
 
+   async findAll(): Promise<CarsRepository.Output[]> {
+      const allLogs = await HistoryLogModel.find().lean();
+
+      return allLogs.map(log => ({
+         id: log._id.toString(),
+         car_id: log.car_id,
+         created_at: log.created_at,
+         process_at: log.process_at,
+      }));
+   }
 }
