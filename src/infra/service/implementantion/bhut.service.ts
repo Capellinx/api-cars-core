@@ -1,5 +1,5 @@
-import { API } from "../../config/api";
-import { CarsService } from "../../domain/service/cars.service";
+import { API } from "../../../config/api";
+import { CarsService } from "../cars.service";
 
 export class BhutService implements CarsService {
    async auth({ login, password }: CarsService.InputAuth): Promise<CarsService.OutputAuth> {
