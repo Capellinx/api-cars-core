@@ -10,6 +10,7 @@ const envSchema = z.object({
    PASSWORD: z.string().describe("Service password"),
    BASE_URL: z.string().describe("Base URL service to consume"),
    RABBITMQ_URL: z.string().describe("AMQP URL"),
+   LOCAL_URL: z.string().describe("Local URL").default("http://localhost:3000"),
 })
 
 const _env = envSchema.safeParse(process.env)
