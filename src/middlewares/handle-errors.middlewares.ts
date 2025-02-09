@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { ZodError } from "zod";
 import { ApplicationError } from "../utils/errors";
+import { MongooseError } from "mongoose";
 
 export class HandleErrorsMiddleware {
    constructor() { }
@@ -18,7 +18,7 @@ export class HandleErrorsMiddleware {
          });
       }
 
-      if (err instanceof PrismaClientKnownRequestError) {
+      if (err instanceof MongooseError) {
          return response.status(500).json({ error: "Database error" });
       }
 
