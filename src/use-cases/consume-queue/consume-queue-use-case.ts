@@ -17,8 +17,7 @@ export class ConsumeQueueUseCase {
       const { messageCount } = await this.messagingService.checkQueue({ queueName: this.queueName })
 
       if (messageCount <= 0) {
-         console.warn("[WARN] - Queue is empty")
-         return
+         return console.warn("[WARN] - Queue is empty")
       }
 
       await this.messagingService.consumeQueue({
