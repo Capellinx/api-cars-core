@@ -11,18 +11,61 @@ services:
       - /app/node_modules
     networks:
       - api_network
+      - rabbitmq_nodejs
     depends_on:
       - mongo
-    command: ["sh", "-c", "npx prisma generate dev && npx nodemon --exec 'npm run start'"]
-
+      - rabbitmq
+    command:
+      [
+        "sh",
+        "-c",
+        "npx nodemon --exec 'npm run start'",
+      ]
 
   mongo:
     image: mongo
     container_name: mongo-db
     volumes:
-      - ./data/db:/data/db
+      - db-data:/var/lib/mongo
     ports:
       - "27017:27017"
+    networks:
+      - api_network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo-db
+      ME_CONFIG_MONGODB_PORT: "27017"
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+    networks:
+      - api_network
+
+  rabbitmq:
+    image: "rabbitmq:3.8-management-alpine"
+    container_name: nodejs-rabbitmq-rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - "rabbitmq-data:/var/lib/rabbitmq"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    networks:
+      - rabbitmq_nodejs
 
 networks:
-  api_network: {}
+  rabbitmq_nodejs:
+    driver: bridge
+  api_network: 
+    driver: bridge
+
+volumes:
+  db-data: {}
+  rabbitmq-data: {}
