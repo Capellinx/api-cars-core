@@ -5,8 +5,7 @@ import { VerifyJwtMiddleware } from "../middlewares/verify-jwt.middleware";
 export const weebhookRouter = Router()
 
 weebhookRouter.post(
-   "/api/notify",
-   VerifyJwtMiddleware.execute,
+   "/api/webhook",
    async (request: Request, response: Response) => {
       await weebhookNotifyController.handle(request, response);
    }
