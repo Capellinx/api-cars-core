@@ -1,18 +1,15 @@
-import { prisma } from "../prisma/prisma";
+import { MongoConnection } from "../mongo/mongoose";
 import { app } from "./app";
 import { env } from "./config/env";
 class Server {
+   private mongoServer = new MongoConnection();
+
    constructor(){
       this.startServer();
    }
 
    private async startDatabase(){
-      try {
-         await prisma.$connect();
-         console.log("🎲 Connected to database");
-      } catch (error) {
-         throw new Error(`❌ Failed to connect to database -> ${error}`);
-      }
+      await this.mongoServer.connect();
    }
 
    public async startServer(){
