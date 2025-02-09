@@ -1,12 +1,16 @@
-import { HistoryLog } from './webhook-notify-schema';
-
+import { CarsRepository } from '../../domain/repositories/cars.repository';
 export class WebhookNotifyUseCase {
-   constructor() { }
+   constructor(
+      private carsRepository: CarsRepository
+   ) { }
 
    async execute({ message }: { message: string }) {
-      const newHistoryLog = new HistoryLog({ message });
-      const savedLog = await newHistoryLog.save();
+      if(!message) {
+         throw new Error('Message is required');
+      }
 
-      return savedLog;
+      await this.carsRepository.createLog(message);
+
+      return
    }
 }
