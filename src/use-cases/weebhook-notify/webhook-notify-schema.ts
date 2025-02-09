@@ -1,8 +1,7 @@
-import mongoose from "mongoose";
+import { Schema, model } from "mongoose";
+import { z } from "zod";
 
-const historyLogSchema = new mongoose.Schema({
-   message: String,
-   createdAt: { type: Date, default: Date.now },
+export const historyLogSchema = z.object({
+   message: z.string(),
+   createdAt: z.date(),
 })
-
-export const HistoryLog = mongoose.model('HistoryLog', historyLogSchema, 'history_logs')
