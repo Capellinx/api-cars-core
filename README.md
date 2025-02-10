@@ -150,9 +150,44 @@ As credenciais de login são:
 
 ### 9. Executando a Aplicação
 
-Agora que a aplicação está configurada, você pode começar a testar todas as funcionalidades implementadas. Em caso de problemas ou dúvidas, não hesite em entrar em contato.
+Agora que a aplicação está configurada, siga os passos abaixo para testar todas as funcionalidades implementadas e verificar o funcionamento.
 
 ---
+
+### Informacão sobre o funcionamento do Consumer + Webhook
+
+### 9.1. **Iniciando a Aplicação**
+
+Antes de tudo, certifique-se de que a aplicação está corretamente configurada e todas as dependências foram instaladas. Após isso, inicie a aplicação com o comando adequado, conforme o ambiente (por exemplo, `npm start`, etc.).
+
+### 9.2. **Consumer da Fila**
+
+O **consumer da fila** é responsável por verificar se há informações na fila toda vez que a aplicação é iniciada. Sempre que a aplicação é executada ou reiniciada, o consumer:
+
+- **Verifica a fila**: Ele consulta a fila para ver se há mensagens ou tarefas pendentes.
+- **Processa a mensagem**: Se houver dados na fila, ele tenta processá-los. Caso haja um erro ou algum problema, ele loga uma **mensagem de advertência (WARN)** no terminal.
+- **Ativa o webhook**: Caso a tarefa seja processada com sucesso, o consumer ativa o **webhook** para realizar uma chamada de callback para o próximo processo.
+
+#### Exemplo de saída do terminal:
+
+- **Se houver uma mensagem e for processada com sucesso:**
+    ```
+    [INFO] - Car created successfully.
+    ```
+
+- **Se houver um erro no processamento ou algum dado inválido:**
+    ```
+    [WARN] - Queue is empty.
+    ```
+
+### 9.3. **Webhook**
+
+O **webhook** é ativado automaticamente após o processamento da fila. Quando o webhook é disparado:
+
+- **Salva dados no banco NoSQL**: O webhook faz uma chamada a um use-case específico da aplicação, que armazena as informações processadas na fila no banco de dados **NoSQL**.
+  
+- **Chamada para um use-case**: Após a ativação do webhook, a aplicação chama um use-case que executa a lógica para armazenar os dados de forma persistente.
+
 
 ## Contato
 
