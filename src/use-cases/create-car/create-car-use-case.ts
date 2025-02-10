@@ -1,7 +1,6 @@
 import { env } from "../../config/env";
 import { Car } from "../../domain/entities/cars";
-import { CarsService } from "../../domain/service/cars.service";
-import { MessagingService } from "../../domain/service/messaging.service";
+import { CarsService } from "../../infra/service/cars.service";
 import { AuthenticateUserUseCase } from "../authenticate-user/authenticate-user-use-case";
 import { PublishCreateInformationUseCase } from "../publish-create-inforamtion/publish-create-information-use-case";
 import { CreateCarDTO } from "./create-car-dto";
